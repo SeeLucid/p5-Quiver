@@ -1,0 +1,38 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use FindBin qw($Bin);
+use lib "$Bin/../lib";
+
+use Quiver;
+
+use Quiver::Source;
+use Quiver::Backend::Ctags;
+use Quiver::Backend::RegexpCommon;
+
+my $src = Quiver::Source->new();
+$src->add( @ARGV );
+
+my $symbols = Quiver::Backend::Ctags->new( source => $src );
+
+my $comments = Quiver::Backend::RegexpCommon->new( source => $src );
+
+#$symbols->symbol_table;
+
+$comments->get_comments;
+
+
+# ABSTRACT: one line description TODO
+
+=pod
+
+=head1 SYNOPSIS
+
+  quiver-dump-docs /usr/include
+
+=head1 DESCRIPTION
+
+TODO
+

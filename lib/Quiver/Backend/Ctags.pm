@@ -1,26 +1,49 @@
-package Quiver;
+package Quiver::Backend::Ctags;
 
 use strict;
 use warnings;
 
 # TODO
-# [ ] take a directory or list of source files as input
-# [ ] call call ctags (or other tags file generator) and place in temp
-# [ ] read all symbols from file
+# [X] read all symbols from file
 # [ ] convert into internal index
 # [ ] dump all function definitions
 # [ ] find all comments in those files and try to match them with the function
 #     definitions
+# [ ] caching of filelist + timestamps / hash ?
 
 use Parse::ExuberantCTags;
 use File::Temp;
 
-sub symbol_table {
-	$self->{_symbols} = {};
+use Moo;
+
+with('Quiver::SourceRole');
+
+has tags_file => ( is => 'rw', default => sub { File::Temp->new } );
+
+sub _run_analysis {
+	my ($self) = @_;
+
+	# TODO: this should be a function in a package
+	# for now, just call exuberant ctags with file list
+	# create tempfile list of files
+	my $files_fh = File::Temp->new();
+	my $files = $self->source->files;
+	for my $file (@$files) {
+		print $files_fh "$file\n";
+	}
+
+	system('ctags', '-f', $self->tags_file, '-L', $files_fh->filename);
 }
 
-sub new {
-	 my $
+sub symbol_table {
+	my ($self) = @_;
+	$self->_run_analysis;
+
+	my $parser = Parse::ExuberantCTags->new( $self->tags_file );
+	my $tag = $parser->firstTag;
+	while (defined($tag = $parser->nextTag)) {
+		use DDP; p $tag;
+	}
 }
 
 1;
