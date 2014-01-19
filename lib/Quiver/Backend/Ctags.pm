@@ -32,7 +32,10 @@ sub _run_analysis {
 		print $files_fh "$file\n";
 	}
 
-	system('ctags', '-f', $self->tags_file, '-L', $files_fh->filename);
+	system('ctags',
+		'-f', $self->tags_file,
+		'-L', $files_fh->filename,
+		'--fields=+n',);
 }
 
 sub symbol_table {
