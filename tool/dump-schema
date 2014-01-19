@@ -1,0 +1,6 @@
+#!/bin/sh
+
+CURDIR=`dirname "$0"`
+sqlite3 $CURDIR/schema.db < $CURDIR/../db/schema.sql
+
+dbicdump -o dump_directory=$CURDIR/../lib Quiver::Schema dbi:SQLite:$CURDIR/schema.db
