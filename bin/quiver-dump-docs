@@ -24,6 +24,7 @@ my $comments = Quiver::Backend::RegexpCommon->new( source => $src );
 $comments->get_comments;
 
 
+# PODNAME: quiver-dump-docs
 # ABSTRACT: one line description TODO
 
 =pod
