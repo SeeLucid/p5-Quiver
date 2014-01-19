@@ -43,10 +43,11 @@ CREATE TABLE IF NOT EXISTS scan (
 	timestarted INTEGER
 );
 
-CREATE TABLE IF NOT EXISTS scanhash (
+CREATE TABLE IF NOT EXISTS scanfilemeta (
 	scanid INTEGER,
 	filename TEXT,
-	md5sum TEXT
+	timelastmod INTEGER,
+	md5sum TEXT,
 
 	FOREIGN KEY(scanid) REFERENCES scan(scanid)
 );
