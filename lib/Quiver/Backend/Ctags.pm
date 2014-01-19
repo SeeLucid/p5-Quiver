@@ -38,15 +38,17 @@ sub _run_analysis {
 		'--fields=+n',);
 }
 
-sub symbol_table {
+sub symbol_table_iter {
 	my ($self) = @_;
 	$self->_run_analysis;
 
 	my $parser = Parse::ExuberantCTags->new( $self->tags_file );
 	my $tag = $parser->firstTag;
-	while (defined($tag = $parser->nextTag)) {
-		use DDP; p $tag;
-	}
+	return sub {
+		my $old_tag = $tag;
+		$tag = $parser->nextTag;
+		return $old_tag;
+	};
 }
 
 1;
