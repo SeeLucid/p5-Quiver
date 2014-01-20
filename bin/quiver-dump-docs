@@ -6,23 +6,47 @@ use warnings;
 use FindBin qw($Bin);
 use lib "$Bin/../lib";
 
-use Quiver;
+use Getopt::Long::Descriptive;
 
+use Quiver;
 use Quiver::Source;
+use Quiver::Schema;
 use Quiver::Backend::Ctags;
 use Quiver::Backend::RegexpCommon;
+
+use SQL::Translator;
+
+my ($opt, $usage) = describe_options(
+	"$0 %o <source dir/files...>",
+	[ 'db|d=s',     "database file", { required => 1  } ],
+	[],
+	[ 'verbose|v',  "print extra stuff"                 ],
+	[ 'help|h|?',   "print usage message and exit"      ],
+);
+print($usage->text), exit if $opt->help;
 
 my $src = Quiver::Source->new();
 $src->add( @ARGV );
 
+my $schema = Quiver::Schema->connect('dbi:SQLite:dbname='. $opt->db );
+unless( -f $opt->db ) {
+	$schema->deploy;
+	$schema->resultset('Symtype')->populate([
+		[ qw(name) ],
+		[ 'function definition' ],
+		[  'function prototype' ],
+		[             'comment' ],
+		[       'documentation' ],
+		[               'macro' ],
+	]);
+}
+
 my $symbols = Quiver::Backend::Ctags->new( source => $src );
-
 my $comments = Quiver::Backend::RegexpCommon->new( source => $src );
-
-#$symbols->symbol_table;
-
-$comments->get_comments;
-
+my $src_extract = [$symbols, $comments, ];
+for my $extractor (@$src_extract) {
+	$extractor->populate_db( $schema );
+}
 
 # PODNAME: quiver-dump-docs
 # ABSTRACT: one line description TODO

@@ -13,6 +13,9 @@ use warnings;
 
 use Parse::ExuberantCTags;
 use File::Temp;
+use Path::Class;
+use URI;
+use Try::Tiny;
 
 use Moo;
 
@@ -49,6 +52,47 @@ sub symbol_table_iter {
 		$tag = $parser->nextTag;
 		return $old_tag;
 	};
+}
+
+sub populate_db {
+	my ($self, $schema) = @_;
+	my $iter = $self->symbol_table_iter;
+
+	my $coderef = sub {
+		while( defined(  my $data = $iter->() ) ) {
+			if( my $row = $self->_convert_to_row($schema, $data) ) {
+				$schema->resultset('Symbol')->create( $row );
+			}
+		}
+	};
+
+	my $rs;
+	try {
+		$rs = $schema->txn_do($coderef);
+	} catch {
+		my $error = shift;
+		# Transaction failed
+		die "something terrible has happened!"
+			if ($error =~ /Rollback failed/);          # Rollback failed
+		$error->rethrow;
+	};
+}
+
+sub _convert_to_row {
+	my ($self, $schema, $data) = @_;
+	my $func_symtype = $schema->resultset('Symtype')->search( { name => 'function definition' } )->first;
+	if( $data->{'kind'} eq 'f' ) {
+		return  {
+			name => $data->{name},
+			symtypeid => $func_symtype->symtypeid,
+			filename => ~~ file($data->{file}),
+
+			linestart => $data->{addressLineNumber},
+
+			# TODO: is using a URI a good idea?
+			uri => ~~ URI->new('ctags:'. $data->{addressPattern}),
+		};
+	}
 }
 
 1;

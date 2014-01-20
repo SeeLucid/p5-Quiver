@@ -7,6 +7,8 @@ use Moo;
 use Regexp::Common qw/ comment /;
 use File::Slurp qw/read_file/;
 use List::BinarySearch qw(:all);
+use Path::Class;
+use Try::Tiny;
 
 with('Quiver::SourceRole');
 
@@ -63,6 +65,49 @@ sub _extract_comment_iter {
 		} else {
 			return undef;
 		}
+	};
+}
+
+sub populate_db {
+	my ($self, $schema) = @_;
+	my $iter = $self->comments_iter;
+
+	my $coderef = sub {
+		while( defined(  my $data = $iter->() ) ) {
+			if( my $row = $self->_convert_to_row($schema, $data) ) {
+				my $symbol_row = $schema->resultset('Symbol')
+					->create( $row );
+				$symbol_row->create_related('symboltext', {
+					symboltext => $data->{text}
+				}) if exists $data->{text};
+			}
+		}
+	};
+
+	my $rs;
+	try {
+		$rs = $schema->txn_do($coderef);
+	} catch {
+		my $error = shift;
+		# Transaction failed
+		die "something terrible has happened!"
+			if ($error =~ /Rollback failed/);          # Rollback failed
+		$error->rethrow;
+	};
+}
+
+sub _convert_to_row {
+	my ($self, $schema, $data) = @_;
+	my $comment_symtype = $schema->resultset('Symtype')->search( { name => 'comment' } )->first;
+	return  {
+		symtypeid => $comment_symtype->symtypeid,
+		filename => ~~ file($data->{file}),
+
+		linestart => $data->{start_line},
+		lineend => $data->{end_line},
+
+		# TODO: is using a URI a good idea?
+		uri => ~~ URI->new("pos:$data->{start_pos},$data->{end_pos}" ),
 	};
 }
 
