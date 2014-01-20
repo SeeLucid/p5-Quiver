@@ -22,11 +22,6 @@ sub comments_iter {
 		while( 1 ) {
 			my $data = $comment->();
 			if( not defined $data ) {
-				$comment = undef;
-			} else {
-				return $data;
-			}
-			if( not defined $comment ) {
 				FILE:
 				while( defined( $file = $files->each ) ) {
 					next FILE unless $file =~ /\.[ch]$/; # just C files
@@ -38,6 +33,8 @@ sub comments_iter {
 					$done = 1;
 					return undef;
 				}
+			} else {
+				return $data;
 			}
 		}
 	};
