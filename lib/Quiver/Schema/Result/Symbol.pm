@@ -38,12 +38,12 @@ __PACKAGE__->table("symbol");
 
   data_type: 'integer'
   is_foreign_key: 1
-  is_nullable: 1
+  is_nullable: 0
 
 =head2 filename
 
   data_type: 'text'
-  is_nullable: 1
+  is_nullable: 0
 
 =head2 linestart
 
@@ -60,6 +60,11 @@ __PACKAGE__->table("symbol");
   data_type: 'text'
   is_nullable: 1
 
+=head2 backendname
+
+  data_type: 'text'
+  is_nullable: 0
+
 =head2 scanid
 
   data_type: 'integer'
@@ -74,15 +79,17 @@ __PACKAGE__->add_columns(
   "name",
   { data_type => "text", is_nullable => 1 },
   "symtypeid",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "filename",
-  { data_type => "text", is_nullable => 1 },
+  { data_type => "text", is_nullable => 0 },
   "linestart",
   { data_type => "integer", is_nullable => 0 },
   "lineend",
   { data_type => "integer", is_nullable => 1 },
   "uri",
   { data_type => "text", is_nullable => 1 },
+  "backendname",
+  { data_type => "text", is_nullable => 0 },
   "scanid",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
 );
@@ -148,17 +155,12 @@ __PACKAGE__->belongs_to(
   "symtypeid",
   "Quiver::Schema::Result::Symtype",
   { symtypeid => "symtypeid" },
-  {
-    is_deferrable => 0,
-    join_type     => "LEFT",
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-01-19 14:48:51
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:37YRK7S/qjxKrgx+mflGhQ
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-05-07 12:21:24
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/6l4QDlncoE+sIGTH2osJQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -59,6 +59,7 @@ sub populate_db {
 	my $iter = $self->symbol_table_iter;
 
 	my $coderef = sub {
+		# TODO drop all symbols from files that come from this backend
 		while( defined(  my $data = $iter->() ) ) {
 			if( my $row = $self->_convert_to_row($schema, $data) ) {
 				$schema->resultset('Symbol')->create( $row );

@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS symtype (
 	symtypeid INTEGER PRIMARY KEY,
-	name TEXT NOT NULL
+	name TEXT NOT NULL PRIMARY KEY
 );
 
 INSERT INTO symtype (name) VALUES ( 'function definition' );
@@ -14,9 +14,9 @@ CREATE TABLE IF NOT EXISTS symbol (
 
 	name TEXT,                   -- symbol name [ e.g., printf ]
 
-	symtypeid INTEGER,           -- symbol type from TABLE `symtype` [ e.g., ( N, 'function prototype' ) ]
+	symtypeid INTEGER NOT NULL,  -- symbol type from TABLE `symtype` [ e.g., ( N, 'function prototype' ) ]
 
-	filename TEXT,               -- filename where the symbol is defined [ e.g., /usr/include/stdio.h ]
+	filename TEXT NOT NULL,      -- filename where the symbol is defined [ e.g., /usr/include/stdio.h ]
 
 	linestart INTEGER NOT NULL,  -- an integer indicating the first line (1-based index) that symbol appears on
 
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS symbol (
 
 	uri TEXT,                    -- backend-specific lookup [ e.g. ctags:... ]
 
-	scanid INTEGER,
+	scanid INTEGER NOT NULL,
 
 	FOREIGN KEY(symtypeid) REFERENCES symtype(symtypeid)
 	FOREIGN KEY(scanid) REFERENCES scan(scanid)
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS symboltext (
 
 CREATE TABLE IF NOT EXISTS scan (
 	scanid INTEGER,
-	sourcename TEXT,
+	sourcename TEXT NOT NULL,
 	timestarted INTEGER
 );
 
