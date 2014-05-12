@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS scanfilemeta (
 
 CREATE TABLE IF NOT EXISTS source (
 	sourceid INTEGER NOT NULL,
-	sourcename TEXT NOT NULL,     --- e.g., Ctags, RegexpCommon, etc.
+	name TEXT NOT NULL,     --- e.g., Ctags, RegexpCommon, etc.
 
-	PRIMARY KEY (sourceid, sourcename)
+	PRIMARY KEY (sourceid, name)
 );
