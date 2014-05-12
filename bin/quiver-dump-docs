@@ -31,14 +31,6 @@ $src->add( @ARGV );
 my $schema = Quiver::Schema->connect('dbi:SQLite:dbname='. $opt->db );
 unless( -f $opt->db ) {
 	$schema->deploy;
-	$schema->resultset('Symtype')->populate([
-		[ qw(name) ],
-		[ 'function definition' ],
-		[  'function prototype' ],
-		[             'comment' ],
-		[       'documentation' ],
-		[               'macro' ],
-	]);
 }
 
 my $symbols = Quiver::Backend::Ctags->new( source => $src );
