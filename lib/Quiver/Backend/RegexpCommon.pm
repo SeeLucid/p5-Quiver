@@ -10,6 +10,7 @@ use List::BinarySearch qw(:all);
 use Path::Class;
 use Try::Tiny;
 
+extends qw(Quiver::Backend);
 with('Quiver::SourceRole');
 
 sub comments_iter {

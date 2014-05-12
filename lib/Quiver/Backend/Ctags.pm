@@ -19,6 +19,7 @@ use Try::Tiny;
 
 use Moo;
 
+extends qw(Quiver::Backend);
 with('Quiver::SourceRole');
 
 has tags_file => ( is => 'rw', default => sub { File::Temp->new } );
