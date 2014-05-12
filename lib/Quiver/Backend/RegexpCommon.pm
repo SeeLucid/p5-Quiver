@@ -9,6 +9,8 @@ use File::Slurp qw/read_file/;
 use List::BinarySearch qw(:all);
 use Path::Class;
 use Try::Tiny;
+use Iterator;
+use Iterator::Util;
 
 extends qw(Quiver::Backend);
 with('Quiver::SourceRole');
@@ -19,28 +21,38 @@ sub comments_iter {
 	my $done = 0;
 	my $comment = sub { undef };
 	my $file = undef;
+	my $file_iter = $self->_files_iter;
 	return sub {
 		return undef if $done;
 		COMMENT:
 		while( 1 ) {
 			my $data = $comment->();
 			if( not defined $data ) {
-				FILE:
-				while( defined( $file = $files->each ) ) {
-					next FILE unless $file =~ /\.[ch]$/; # just C files
-					$comment = $self->_extract_comment_iter($file);
-					next COMMENT;
-				}
-				if( not defined $file ) {
+				if( $file_iter->is_exhausted ) {
 					# no next file
 					$done = 1;
 					return undef;
+				} else {
+					$file = $file_iter->value();
+					$comment = $self->_extract_comment_iter($file);
+					next COMMENT;
 				}
 			} else {
 				return $data;
 			}
 		}
 	};
+}
+
+sub _files_iter {
+	my ($self) = @_;
+	my $files = $self->source->files;
+	my $file_it = Iterator->new( sub {
+		my $data = $files->each;
+		Iterator::is_done unless defined $data;
+		$data;
+	} );
+	igrep { $_ =~ /\.[ch]$/  } $file_it; # just C files
 }
 
 sub _extract_comment_iter {
