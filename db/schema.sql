@@ -1,8 +1,6 @@
 CREATE TABLE IF NOT EXISTS symtype (
-	symtypeid INTEGER,
-	name TEXT NOT NULL,
-
-	PRIMARY KEY (symtypeid, name)
+	symtypeid INTEGER PRIMARY KEY,
+	name TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS symbol (
@@ -23,7 +21,7 @@ CREATE TABLE IF NOT EXISTS symbol (
 	scanid INTEGER NOT NULL,
 
 	FOREIGN KEY(symtypeid) REFERENCES symtype(symtypeid),
-	FOREIGN KEY(scanfilemetaid) REFERENCES scanfilemeta(scanfilemetaid),
+	FOREIGN KEY(scanfilemetaid) REFERENCES scanfilemeta(scanfilemetaid) ON DELETE CASCADE,
 	FOREIGN KEY(scanid) REFERENCES scan(scanid)
 );
 
@@ -31,7 +29,7 @@ CREATE TABLE IF NOT EXISTS symboltext (
 	symboluid INTEGER PRIMARY KEY,
 	symboltext TEXT NOT NULL,
 
-	FOREIGN KEY(symboluid) REFERENCES symbol(symboluid)
+	FOREIGN KEY(symboluid) REFERENCES symbol(symboluid) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS scan (
@@ -43,16 +41,12 @@ CREATE TABLE IF NOT EXISTS scan (
 );
 
 CREATE TABLE IF NOT EXISTS scanfilemeta (
-	scanfilemetaid INTEGER NOT NULL,
-	filename TEXT NOT NULL,       -- path to file
-	timelastmod INTEGER NOT NULL, -- timestamp: time last modified
-
-	PRIMARY KEY (scanfilemetaid, filename)
+	scanfilemetaid INTEGER PRIMARY KEY,
+	filename TEXT NOT NULL UNIQUE,       -- path to file
+	timelastmod INTEGER NOT NULL         -- timestamp: time last modified
 );
 
 CREATE TABLE IF NOT EXISTS source (
-	sourceid INTEGER NOT NULL,
-	name TEXT NOT NULL,     --- e.g., Ctags, RegexpCommon, etc.
-
-	PRIMARY KEY (sourceid, name)
+	sourceid INTEGER PRIMARY KEY,
+	name TEXT NOT NULL UNIQUE     --- e.g., Ctags, RegexpCommon, etc.
 );
