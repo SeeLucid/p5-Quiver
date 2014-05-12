@@ -38,12 +38,12 @@ sub add {
 	my ($self, @items) = @_;
 	for my $item (@items) {
 		if( -f $item ) {
-			$self->{_files}->insert( file($item)->stringify );
+			$self->{_files}->insert( file($item)->absolute->stringify );
 		} elsif( -d $item ) {
-			$self->{_dirs}->insert( dir($item)->stringify );
+			$self->{_dirs}->insert( dir($item)->absolute->stringify );
 		} elsif( ref $item eq 'CODE' ) {
 			$self->{_coderefs}->insert($item);
-		} elsif( ref $item->CAN('_get_items') ) {
+		} elsif( ref $item and $item->can('_get_items') ) {
 			# for adding another Quiver::Source
 			push @items, $item->_get_items;
 		} else {
@@ -62,7 +62,8 @@ sub _get_items {
 
 =method files()
 
-returns a L<Set::Scalar> that contains all files from the items added using C<add()>.
+returns a L<Set::Scalar> that contains all files from the items added using
+C<add()>. These will be absolute paths.
 
 =cut
 sub files {
@@ -77,7 +78,7 @@ sub files {
 	}
 
         while (defined(my $rule = $self->{_coderefs}->each)) {
-		my @files = $rule->();
+		my @files = map { file($_)->absolute->stringify } $rule->();
 		$files->insert( @files );
 	}
 	$files;
