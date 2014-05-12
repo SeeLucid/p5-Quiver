@@ -29,7 +29,10 @@ print($usage->text), exit if $opt->help;
 my $src = Quiver::Source->new();
 $src->add( @ARGV );
 
-my $schema = Quiver::Schema->connect('dbi:SQLite:dbname='. $opt->db );
+my $schema = Quiver::Schema->connect('dbi:SQLite:dbname='. $opt->db,
+	'', '',
+	{},
+	{ on_connect_call => 'use_foreign_keys' });
 unless( -f $opt->db ) {
 	$schema->deploy;
 }

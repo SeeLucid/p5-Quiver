@@ -1,3 +1,5 @@
+PRAGMA foreign_keys = ON;
+
 CREATE TABLE IF NOT EXISTS symtype (
 	symtypeid INTEGER PRIMARY KEY,
 	name TEXT NOT NULL UNIQUE
