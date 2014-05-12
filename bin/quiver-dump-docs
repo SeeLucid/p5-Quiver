@@ -13,6 +13,7 @@ use Quiver::Source;
 use Quiver::Schema;
 use Quiver::Backend::Ctags;
 use Quiver::Backend::RegexpCommon;
+use Quiver::Runner;
 
 use SQL::Translator;
 
@@ -35,10 +36,11 @@ unless( -f $opt->db ) {
 
 my $symbols = Quiver::Backend::Ctags->new( source => $src );
 my $comments = Quiver::Backend::RegexpCommon->new( source => $src );
-my $src_extract = [$symbols, $comments, ];
-for my $extractor (@$src_extract) {
-	$extractor->populate_db( $schema );
-}
+
+my $runner = Quiver::Runner->new( schema => $schema );
+$runner->add_backend($symbols, $comments);
+
+$runner->scan;
 
 # PODNAME: quiver-dump-docs
 # ABSTRACT: one line description TODO
