@@ -56,13 +56,16 @@ sub symbol_table_iter {
 }
 
 sub populate_db {
-	my ($self, $schema) = @_;
+	my ($self, $schema, $options) = @_;
 	my $iter = $self->symbol_table_iter;
+	my $scanid = $options->{scan}->scanid;
+	my $sourceid = $options->{scan}->get_column('sourceid');
 
 	my $coderef = sub {
-		# TODO drop all symbols from files that come from this backend
+		$self->_drop_symbols_with_backend($schema, $sourceid);
 		while( defined(  my $data = $iter->() ) ) {
 			if( my $row = $self->_convert_to_row($schema, $data) ) {
+				$row->{scanid} = $scanid;
 				$schema->resultset('Symbol')->create( $row );
 			}
 		}
@@ -82,12 +85,14 @@ sub populate_db {
 
 sub _convert_to_row {
 	my ($self, $schema, $data) = @_;
-	my $func_symtype = $schema->resultset('Symtype')->search( { name => 'function definition' } )->first;
+	my $func_symtype = $schema->resultset('Symtype')->find( { name => 'function definition' } );
+	my $scanfilemetaid = $schema->resultset('Scanfilemeta')->find(
+		{ filename => file($data->{file}) } )->scanfilemetaid;
 	if( $data->{'kind'} eq 'f' ) {
 		return  {
 			name => $data->{name},
 			symtypeid => $func_symtype->symtypeid,
-			filename => ~~ file($data->{file}),
+			scanfilemetaid => $scanfilemetaid,
 
 			linestart => $data->{addressLineNumber},
 

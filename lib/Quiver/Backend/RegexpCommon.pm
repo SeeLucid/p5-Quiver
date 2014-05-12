@@ -70,12 +70,16 @@ sub _extract_comment_iter {
 }
 
 sub populate_db {
-	my ($self, $schema) = @_;
+	my ($self, $schema, $options) = @_;
 	my $iter = $self->comments_iter;
+	my $scanid = $options->{scan}->scanid;
+	my $sourceid = $options->{scan}->get_column('sourceid');
 
 	my $coderef = sub {
+		$self->_drop_symbols_with_backend($schema, $sourceid);
 		while( defined(  my $data = $iter->() ) ) {
 			if( my $row = $self->_convert_to_row($schema, $data) ) {
+				$row->{scanid} = $scanid;
 				my $symbol_row = $schema->resultset('Symbol')
 					->create( $row );
 				$symbol_row->create_related('symboltext', {
@@ -99,10 +103,12 @@ sub populate_db {
 
 sub _convert_to_row {
 	my ($self, $schema, $data) = @_;
-	my $comment_symtype = $schema->resultset('Symtype')->search( { name => 'comment' } )->first;
+	my $comment_symtype = $schema->resultset('Symtype')->find( { name => 'comment' } );
+	my $scanfilemetaid = $schema->resultset('Scanfilemeta')->find(
+		{ filename => file($data->{file}) } )->scanfilemetaid;
 	return  {
 		symtypeid => $comment_symtype->symtypeid,
-		filename => ~~ file($data->{file}),
+		scanfilemetaid => $scanfilemetaid,
 
 		linestart => $data->{start_line},
 		lineend => $data->{end_line},
