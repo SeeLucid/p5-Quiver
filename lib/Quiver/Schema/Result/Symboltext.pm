@@ -75,12 +75,12 @@ __PACKAGE__->belongs_to(
   "symboluid",
   "Quiver::Schema::Result::Symbol",
   { symboluid => "symboluid" },
-  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
+  { is_deferrable => 0, on_delete => "CASCADE", on_update => "NO ACTION" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-05-11 22:26:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TjajJKWqjL6v3DHYlXqWGQ
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-05-12 15:34:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EjUzBMZLjPoYjZyIpwMB4g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
