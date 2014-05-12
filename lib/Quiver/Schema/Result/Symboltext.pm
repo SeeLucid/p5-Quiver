@@ -33,7 +33,7 @@ __PACKAGE__->table("symboltext");
 =head2 symboltext
 
   data_type: 'text'
-  is_nullable: 1
+  is_nullable: 0
 
 =cut
 
@@ -46,7 +46,7 @@ __PACKAGE__->add_columns(
     is_nullable       => 0,
   },
   "symboltext",
-  { data_type => "text", is_nullable => 1 },
+  { data_type => "text", is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -79,8 +79,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-01-19 14:48:51
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vCwIK+Lq1HSMW1oTMexrfA
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-05-11 22:26:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TjajJKWqjL6v3DHYlXqWGQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

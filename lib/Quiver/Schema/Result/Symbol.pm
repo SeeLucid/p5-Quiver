@@ -40,10 +40,11 @@ __PACKAGE__->table("symbol");
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 filename
+=head2 scanfilemetaid
 
-  data_type: 'text'
-  is_nullable: 0
+  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 1
 
 =head2 linestart
 
@@ -60,16 +61,11 @@ __PACKAGE__->table("symbol");
   data_type: 'text'
   is_nullable: 1
 
-=head2 backendname
-
-  data_type: 'text'
-  is_nullable: 0
-
 =head2 scanid
 
   data_type: 'integer'
   is_foreign_key: 1
-  is_nullable: 1
+  is_nullable: 0
 
 =cut
 
@@ -80,18 +76,16 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "symtypeid",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
-  "filename",
-  { data_type => "text", is_nullable => 0 },
+  "scanfilemetaid",
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "linestart",
   { data_type => "integer", is_nullable => 0 },
   "lineend",
   { data_type => "integer", is_nullable => 1 },
   "uri",
   { data_type => "text", is_nullable => 1 },
-  "backendname",
-  { data_type => "text", is_nullable => 0 },
   "scanid",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -108,6 +102,26 @@ __PACKAGE__->set_primary_key("symboluid");
 
 =head1 RELATIONS
 
+=head2 scanfilemetaid
+
+Type: belongs_to
+
+Related object: L<Quiver::Schema::Result::Scanfilemeta>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "scanfilemetaid",
+  "Quiver::Schema::Result::Scanfilemeta",
+  { scanfilemetaid => "scanfilemetaid" },
+  {
+    is_deferrable => 0,
+    join_type     => "LEFT",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
+  },
+);
+
 =head2 scanid
 
 Type: belongs_to
@@ -120,12 +134,7 @@ __PACKAGE__->belongs_to(
   "scanid",
   "Quiver::Schema::Result::Scan",
   { scanid => "scanid" },
-  {
-    is_deferrable => 0,
-    join_type     => "LEFT",
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 symboltext
@@ -159,8 +168,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-05-07 12:21:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/6l4QDlncoE+sIGTH2osJQ
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-05-11 22:26:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EaHeAOuMbF6TQ5ZazBYYfg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
