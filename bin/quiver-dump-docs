@@ -49,18 +49,16 @@ if( $opt->scan ) {
 	$runner->scan;
 }
 if( $opt->extract ) {
-	# TODO
-	# find all comments that minimize the difference between the line
-	# end and a symbol line start and are in the same file
-	my @functions = 
-	$schema->resultset('DocumentationMatch')->search(
-		{} 
-	)->all;
-	my $first = $functions[0];
-	#use DDP; p $first;
-	use DDP; p $first->comment_symbol->symboltext->symboltext;
-	use DDP; p $first->function_symbol->name;
-	#use DDP; p @functions;
+	my $functions = [
+		map {
+			+{
+				comment => $_->comment_symbol->symboltext->symboltext,
+				function => $_->function_symbol->name,
+				file => $_->filenameid->filename,
+			};
+		} $schema->resultset('DocumentationMatch')->search({})->all
+	];
+	use DDP; p $functions;
 }
 
 # PODNAME: quiver-dump-docs
