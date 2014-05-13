@@ -22,6 +22,8 @@ my ($opt, $usage) = describe_options(
 	[ 'db|d=s',     "database file", { required => 1  } ],
 	[],
 	[ 'verbose|v',  "print extra stuff"                 ],
+	[ 'scan',       "scan the files"                    ],
+	[ 'extract',    "extract comments"                  ],
 	[ 'help|h|?',   "print usage message and exit"      ],
 );
 print($usage->text), exit if $opt->help;
@@ -37,13 +39,29 @@ unless( -f $opt->db ) {
 	$schema->deploy;
 }
 
-my $symbols = Quiver::Backend::Ctags->new( source => $src );
-my $comments = Quiver::Backend::RegexpCommon->new( source => $src );
+if( $opt->scan ) {
+	my $symbols = Quiver::Backend::Ctags->new( source => $src );
+	my $comments = Quiver::Backend::RegexpCommon->new( source => $src );
 
-my $runner = Quiver::Runner->new( schema => $schema );
-$runner->add_backend($symbols, $comments);
+	my $runner = Quiver::Runner->new( schema => $schema );
+	$runner->add_backend($symbols, $comments);
 
-$runner->scan;
+	$runner->scan;
+}
+if( $opt->extract ) {
+	# TODO
+	# find all comments that minimize the difference between the line
+	# end and a symbol line start and are in the same file
+	my @functions = 
+	$schema->resultset('DocumentationMatch')->search(
+		{} 
+	)->all;
+	my $first = $functions[0];
+	use DDP; p $first;
+	use DDP; p $first->comment_symbol;
+	use DDP; p $first->function_symbol;
+	#use DDP; p @functions;
+}
 
 # PODNAME: quiver-dump-docs
 # ABSTRACT: one line description TODO
