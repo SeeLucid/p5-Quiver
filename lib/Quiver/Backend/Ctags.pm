@@ -58,29 +58,7 @@ sub symbol_table_iter {
 sub populate_db {
 	my ($self, $schema, $options) = @_;
 	my $iter = $self->symbol_table_iter;
-	my $scanid = $options->{scan}->scanid;
-	my $sourceid = $options->{scan}->get_column('sourceid');
-
-	my $coderef = sub {
-		$self->_drop_symbols_with_backend($schema, $sourceid);
-		while( defined(  my $data = $iter->() ) ) {
-			if( my $row = $self->_convert_to_row($schema, $data) ) {
-				$row->{scanid} = $scanid;
-				$schema->resultset('Symbol')->create( $row );
-			}
-		}
-	};
-
-	my $rs;
-	try {
-		$rs = $schema->txn_do($coderef);
-	} catch {
-		my $error = shift;
-		# Transaction failed
-		die "something terrible has happened!"
-			if ($error =~ /Rollback failed/);          # Rollback failed
-		$error->rethrow;
-	};
+	$self->_populate_db($schema, $options, $iter);
 }
 
 sub _convert_to_row {
