@@ -57,9 +57,9 @@ if( $opt->extract ) {
 		{} 
 	)->all;
 	my $first = $functions[0];
-	use DDP; p $first;
-	use DDP; p $first->comment_symbol;
-	use DDP; p $first->function_symbol;
+	#use DDP; p $first;
+	use DDP; p $first->comment_symbol->symboltext->symboltext;
+	use DDP; p $first->function_symbol->name;
 	#use DDP; p @functions;
 }
 

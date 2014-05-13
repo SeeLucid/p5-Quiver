@@ -83,7 +83,7 @@ sub scan {
 				$self->_register_backend($backend);
 				$self->_record_source_metadata($backend);
 				$self->_initiate_scan( $backend );
-			})
+			});
 		} catch {
 			my $error = shift;
 			# Transaction failed
