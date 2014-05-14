@@ -78,8 +78,8 @@ sub files {
 	}
 
         while (defined(my $rule = $self->{_coderefs}->each)) {
-		my $next;
-		$files->insert( file($next)->absolute->resolve->stringify ) while( defined( $next = $rule->() ) );
+		my @files = map { file($_)->absolute->resolve->stringify } $rule->();
+		$files->insert( @files );
 	}
 	$files;
 }
