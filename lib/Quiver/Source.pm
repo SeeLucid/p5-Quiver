@@ -38,9 +38,9 @@ sub add {
 	my ($self, @items) = @_;
 	for my $item (@items) {
 		if( -f $item ) {
-			$self->{_files}->insert( file($item)->absolute->stringify );
+			$self->{_files}->insert( file($item)->absolute->resolve->stringify );
 		} elsif( -d $item ) {
-			$self->{_dirs}->insert( dir($item)->absolute->stringify );
+			$self->{_dirs}->insert( dir($item)->absolute->resolve->stringify );
 		} elsif( ref $item eq 'CODE' ) {
 			$self->{_coderefs}->insert($item);
 		} elsif( ref $item and $item->can('_get_items') ) {
@@ -78,7 +78,7 @@ sub files {
 	}
 
         while (defined(my $rule = $self->{_coderefs}->each)) {
-		my @files = map { file($_)->absolute->stringify } $rule->();
+		my @files = map { file($_)->absolute->resolve->stringify } $rule->();
 		$files->insert( @files );
 	}
 	$files;
