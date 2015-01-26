@@ -8,10 +8,21 @@ use Capture::Tiny qw(capture);
 
 sub run {
 	my ($self, $doc) = @_;
-	my ($stdout, $stderr, $success) = capture {
+	$doc =~ s/([\\'])/\\$1/g; # any backslashes and quotes will need to escaped for Prolog
+	my ($stdout, $stderr, $exit) = capture {
 		delete local $ENV{DISPLAY}; # unset so it doesn't use X11 display
 		system( qw(swipl -g),  "help('$doc'),halt" );
 	};
+	chomp($stdout);
+	chomp($stderr);
+	if( $exit != 0 || $stderr ) {
+		my $error_msg = $stderr;
+		$error_msg .= $stdout if $stdout;
+		die $error_msg; # TODO use a exception class
+	}
+	if( $stdout =~ /^No help available for/ ) {
+		warn "no help found"; # TODO use a exception class (and die!)
+	}
 	$stdout;
 }
 
