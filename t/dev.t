@@ -6,9 +6,16 @@ use warnings;
 use Quiver::Backend::SWIProlog;
 
 my $doc = Quiver::Backend::SWIProlog->run('bagof');
-use DDP; p $doc;
+like( $doc, qr/bagof\([^)]*\)/ );
 
+ok(Quiver::Backend::SWIProlog->run('\\+'));
+ok(Quiver::Backend::SWIProlog->run('#/\\'));
+ok(Quiver::Backend::SWIProlog->run('?='));
+ok(Quiver::Backend::SWIProlog->run('**'));
 
+ok(Quiver::Backend::SWIProlog->run('statistics'));
+ok(Quiver::Backend::SWIProlog->run('statistics/0'));
+ok(Quiver::Backend::SWIProlog->run('statistics/2'));
 
 throws_ok
 	{ Quiver::Backend::SWIProlog->run('agof') }

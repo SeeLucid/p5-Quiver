@@ -9,10 +9,9 @@ use Quiver::Error;
 
 sub run {
 	my ($self, $doc) = @_;
-	$doc =~ s/([\\'])/\\$1/g; # any backslashes and quotes will need to escaped for Prolog
 	my ($stdout, $stderr, $exit) = capture {
 		delete local $ENV{DISPLAY}; # unset so it doesn't use X11 display
-		system( qw(swipl -g),  "help('$doc'),halt" );
+		system( qw(swipl -g),  "help($doc),halt" );
 	};
 	chomp($stdout);
 	chomp($stderr);
