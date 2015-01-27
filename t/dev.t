@@ -8,6 +8,9 @@ use Quiver::Backend::SWIProlog;
 my $doc = Quiver::Backend::SWIProlog->run('bagof');
 like( $doc, qr/bagof\([^)]*\)/ );
 
+ok(Quiver::Backend::SWIProlog->run('help'));
+ok(Quiver::Backend::SWIProlog->run('apropos'));
+
 ok(Quiver::Backend::SWIProlog->run('\\+'));
 ok(Quiver::Backend::SWIProlog->run('#/\\'));
 ok(Quiver::Backend::SWIProlog->run('?='));

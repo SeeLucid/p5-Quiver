@@ -7,6 +7,9 @@ use Quiver::Error;
 # /usr/lib/swi-prolog/library/MANUAL
 # /usr/lib/swi-prolog/library/helpidx.pl
 
+# TODO apropos/1 for searching
+# TODO document the arguments to help/1
+
 sub run {
 	my ($self, $doc) = @_;
 	my ($stdout, $stderr, $exit) = capture {
