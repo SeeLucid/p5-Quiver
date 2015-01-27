@@ -13,8 +13,11 @@ sub run {
 		delete local $ENV{DISPLAY}; # unset so it doesn't use X11 display
 		system( qw(swipl -g),  "help($doc),halt" );
 	};
-	chomp($stdout);
-	chomp($stderr);
+
+	# trim newlines off the end
+	$stdout =~ s/\n*$//sg;
+	$stderr =~ s/\n*$//sg;
+
 	if( $exit != 0 || $stderr ) {
 		my $error_msg = $stderr;
 		$error_msg .= $stdout if $stdout;
