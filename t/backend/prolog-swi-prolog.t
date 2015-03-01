@@ -1,4 +1,4 @@
-use Test::Most;
+use Test::Most tests => 13;
 
 use strict;
 use warnings;
