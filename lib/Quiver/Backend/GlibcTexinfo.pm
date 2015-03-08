@@ -9,7 +9,7 @@ use HTTP::Tiny;
 use Path::Class;
 use File::Temp ();
 
-my $info_url = "https://www.gnu.org/software/libc/manual/info/libc-info.tar.gz"
+my $info_url = "https://www.gnu.org/software/libc/manual/info/libc-info.tar.gz";
 my $info_archive_filename = "libc-info.tar.gz";
 # via https://www.gnu.org/software/libc/manual/
 # source
@@ -35,8 +35,8 @@ sub run {
 
 	system(qw( info ),
 		-o => $tempfile->filename,
-		-f => $archive_filename
-		--index-search => $doc,
+		-f => $archive_filename,
+		'--index-search' => $doc,
 		);
 	my $text = $tempfile->slurp;
 }
