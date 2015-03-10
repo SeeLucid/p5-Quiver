@@ -17,7 +17,8 @@ sub _build_tarball_file_path {
 	my ($self) = @_;
 	my $http = HTTP::Tiny->new;
 	my $response = $http->get( $self->tarball_uri );
-	die "Could not download" unless $response->{success};
+	Quiver::Error::IO::Network->throw("Could not download: @{[$self->tarball_uri]}")
+		unless $response->{success};
 	my $dir = Path::Class::tempdir(CLEANUP => 1);
 	my $archive_filename = $dir->file( $self->tarball_filename );
 	$archive_filename->spew( iomode => '>:raw', $response->{content} );
