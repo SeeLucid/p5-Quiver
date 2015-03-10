@@ -2,7 +2,9 @@ use Test::More tests => 1;
 
 use Quiver::Backend::GlibcTexinfo;
 
-my $doc = Quiver::Backend::GlibcTexinfo->run('printf');
+my $info = Quiver::Backend::GlibcTexinfo->new;
+my $doc = $info->run('printf');
+use DDP; p $doc;
 
 pass;
 
