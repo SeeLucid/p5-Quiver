@@ -5,6 +5,9 @@ use warnings;
 
 use Moo;
 
+# Debian:
+#     glibc-doc glibc-doc-reference
+
 # TODO find a better way to deal with texinfo install
 #use lib '/usr/share/texinfo';
 use File::Temp ();
