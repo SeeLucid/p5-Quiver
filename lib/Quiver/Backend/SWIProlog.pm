@@ -25,11 +25,9 @@ sub run {
 		my $error_msg = $stderr;
 		$error_msg .= $stdout if $stdout;
 		Quiver::Error::Input->throw( $error_msg );
-		die $error_msg; # TODO use a exception class
 	}
 	if( $stdout =~ /^No help available for/ ) {
 		Quiver::Error::NotFound->throw( $stdout );
-		#warn "no help found"; # TODO use a exception class (and die!)
 	}
 	$stdout;
 }
