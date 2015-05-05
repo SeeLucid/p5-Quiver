@@ -1,9 +1,20 @@
-function
-	function arguments
-	comment
-	return type
+TODO
+	Data
+		Depedency injection of configuration
+			configuration
+				where each of the source or documentation files are located
+		Open tarballs/ZIP archives in memory
+	Formats
+		parse groff
+			parse mandoc
+		parse C comments
+	Queries
+		function
+			function arguments
+			comment
+			return type
+		type
+			type definition
+			where are types used
+			subtypes
 
-type
-	type definition
-	where are types used
-	subtypes
