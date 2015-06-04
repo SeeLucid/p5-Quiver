@@ -37,7 +37,7 @@ use Data::Dumper;
 use Quiver::Error;
 
 our @ISA     = 'Pod::Perldoc';
- 
+
 sub new {
 	my $class = shift;
 	my $self  = $class->SUPER::new(@_);
@@ -56,6 +56,6 @@ sub grand_search_init {
 
 	Quiver::Error::NotFound->throw( Dumper(\@rest) );
 }
- 
+
 
 1;

@@ -3,6 +3,7 @@ package Quiver::Backend::LinuxManPages;
 use strict;
 use warnings;
 
+use Quiver::Error;
 use Moo;
 use HTML::LinkExtor;
 # Debian:

@@ -3,6 +3,7 @@ package Quiver::Backend::Role::WebArchive;
 use strict;
 use warnings;
 
+use Quiver::Error;
 use Moo::Role;
 
 use HTTP::Tiny;
