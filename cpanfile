@@ -1,3 +1,4 @@
+requires 'FindBin::libs';
 
 # for Texinfo::Parser {{{
 requires 'Locale::Messages';
