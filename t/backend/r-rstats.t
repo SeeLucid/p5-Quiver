@@ -1,9 +1,18 @@
-use Test::Most tests => 2;
+use Test::Most;
 
 use strict;
 use warnings;
 
-use Quiver::Backend::Rstats;
+BEGIN {
+	eval "use Quiver::Backend::Rstats";
+	if( $@ =~ /Quiver::Error::Backend::NotAvailable/ ) {
+		plan skip_all => "$@";
+	} elsif( $@ ) {
+		die $@;
+	}
+}
+
+plan tests => 2;
 
 subtest 'lookup R documentation' => sub {
 	my $doc = Quiver::Backend::Rstats->run('data.frame');

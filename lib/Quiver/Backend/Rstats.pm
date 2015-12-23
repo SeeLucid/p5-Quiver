@@ -4,6 +4,13 @@ use strict;
 use warnings;
 use Capture::Tiny qw(capture);
 use Quiver::Error;
+use File::Which;
+
+BEGIN {
+	which('Rscript')
+		or Quiver::Error::Backend::NotAvailable
+			->throw('Rscript is not in the PATH');
+}
 
 sub run {
 	my ($self, $doc) = @_;
