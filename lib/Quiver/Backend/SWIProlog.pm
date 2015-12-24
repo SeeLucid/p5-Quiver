@@ -4,6 +4,15 @@ use strict;
 use warnings;
 use Capture::Tiny qw(capture);
 use Quiver::Error;
+use File::Which;
+
+BEGIN {
+	which('swipl')
+		or Quiver::Error::Backend::NotAvailable
+			->throw('swipl is not in the PATH');
+}
+
+
 # /usr/lib/swi-prolog/library/MANUAL
 # /usr/lib/swi-prolog/library/helpidx.pl
 

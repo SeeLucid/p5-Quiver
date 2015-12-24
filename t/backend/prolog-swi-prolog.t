@@ -1,9 +1,18 @@
-use Test::Most tests => 3;
+use Test::Most;
 
 use strict;
 use warnings;
 
-use Quiver::Backend::SWIProlog;
+BEGIN {
+	eval "use Quiver::Backend::SWIProlog";
+	if( $@ =~ /Quiver::Error::Backend::NotAvailable/ ) {
+		plan skip_all => "$@";
+	} elsif( $@ ) {
+		die $@;
+	}
+}
+
+plan tests => 3;
 
 subtest "bagof documentation" => sub {
 	my $doc = Quiver::Backend::SWIProlog->run('bagof');
