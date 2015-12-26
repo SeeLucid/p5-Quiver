@@ -28,7 +28,10 @@ subtest 'lookup Octave documentation' => sub {
 
 
 subtest "errors in Octave documentation lookup" => sub {
-	throws_ok { my $doc = Quiver::Backend::Octave->run('not_an_octave_function'); } 'Quiver::Error::NotFound', "no doc for 'not_an_octave_function'";
+	throws_ok
+		{ my $doc = Quiver::Backend::Octave->run('not_an_octave_function'); }
+		'Quiver::Error::NotFound',
+		"no doc for 'not_an_octave_function'";
 };
 
 done_testing;
