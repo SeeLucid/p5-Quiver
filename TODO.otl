@@ -4,6 +4,14 @@ TODO
 			configuration
 				where each of the source or documentation files are located
 		Open tarballs/ZIP archives in memory
+			VFS
+				libarchive
+		Source files
+			detect changes
+				method
+					using checksums
+					using Git index
+				serialise the results
 	Formats
 		parse groff
 			parse mandoc
