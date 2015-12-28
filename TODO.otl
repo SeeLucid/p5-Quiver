@@ -25,4 +25,10 @@ TODO
 			type definition
 			where are types used
 			subtypes
+	Projects can have multiple contexts
+		e.g., with multiple languages
+		OS environment also provides context
+		perhaps the ability to switch out contexts is important too
+			different versions of compiler, interpreter
+			understand rvm, perlbrew, etc.
 
