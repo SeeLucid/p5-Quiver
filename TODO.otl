@@ -12,6 +12,9 @@ TODO
 					using checksums
 					using Git index
 				serialise the results
+		Code model
+			inheritance
+			use compression for data structures?
 	Formats
 		parse groff
 			parse mandoc
