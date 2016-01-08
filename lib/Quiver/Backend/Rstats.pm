@@ -13,11 +13,18 @@ BEGIN {
 }
 
 sub run {
-	my ($self, $doc) = @_;
+	my ($self, $doc, %rest) = @_;
+	my @pre_expression = ();
+	my $library_code = "";
+	if( exists $rest{libraries} ) {
+		$library_code = join "; ", map { "library('$_')" } @{ $rest{libraries} };
+		push @pre_expression, $library_code;
+	}
 	my ($stdout, $stderr, $exit) = capture {
 		delete local $ENV{DISPLAY}; # unset so it doesn't use X11 display
 		my $doc_escape = $doc =~ s/([\\'])/\\$1/r;
-		system( qw(Rscript -e), "help('$doc_escape')"  );
+		my @pre_expression_args = map { (qw(-e), $_) } @pre_expression;
+		system( qw(Rscript), @pre_expression_args, qw(-e), "help('$doc_escape')"  );
 	};
 
 	if( $stdout =~ /^No documentation for/ ) {
