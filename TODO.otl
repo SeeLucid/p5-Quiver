@@ -34,4 +34,6 @@ TODO
 		perhaps the ability to switch out contexts is important too
 			different versions of compiler, interpreter
 			understand rvm, perlbrew, etc.
+	When handling types in C, we need to understand how typedefs are equivalent
+		but the types should remain as they are and not substituted
 
