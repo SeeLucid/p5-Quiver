@@ -36,4 +36,5 @@ TODO
 			understand rvm, perlbrew, etc.
 	When handling types in C, we need to understand how typedefs are equivalent
 		but the types should remain as they are and not substituted
+		partial C preprocessor : do not expand system libraries (and #defines that are from the system)
 
