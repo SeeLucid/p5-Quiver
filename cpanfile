@@ -4,3 +4,13 @@ requires 'FindBin::libs';
 requires 'Locale::Messages';
 requires 'Unicode::EastAsianWidth';
 #}}}
+
+
+requires 'Moo';
+requires 'Regexp::Common';
+requires 'File::Slurp';
+requires 'List::BinarySearch';
+requires 'Path::Class';
+requires 'Try::Tiny';
+requires 'Iterator';
+requires 'Iterator::Util';
