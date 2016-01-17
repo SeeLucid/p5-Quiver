@@ -14,3 +14,7 @@ requires 'Path::Class';
 requires 'Try::Tiny';
 requires 'Iterator';
 requires 'Iterator::Util';
+
+requires 'Capture::Tiny';
+requires 'File::Which';
+requires 'failures';
