@@ -37,4 +37,7 @@ TODO
 	When handling types in C, we need to understand how typedefs are equivalent
 		but the types should remain as they are and not substituted
 		partial C preprocessor : do not expand system libraries (and #defines that are from the system)
+	When handling bitfields, provide a declarative grammar
+		: e.g., for mmap(2), exactly one of { MAP_PRIVATE, MAP_SHARED } is
+		: required in the bitfield of the `flags` parameter.
 
