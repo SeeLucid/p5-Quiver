@@ -18,3 +18,5 @@ requires 'Iterator::Util';
 requires 'Capture::Tiny';
 requires 'File::Which';
 requires 'failures';
+
+requires 'HTML::LinkExtor';
