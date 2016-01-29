@@ -20,3 +20,6 @@ requires 'File::Which';
 requires 'failures';
 
 requires 'HTML::LinkExtor';
+
+requires 'HTTP::Tiny';
+requires 'IO::Socket::SSL';
