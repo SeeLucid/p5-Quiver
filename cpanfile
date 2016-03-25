@@ -27,3 +27,4 @@ requires 'HTTP::Tiny';
 requires 'IO::Socket::SSL';
 
 requires 'Set::Scalar';
+requires 'Parse::ExuberantCTags';
