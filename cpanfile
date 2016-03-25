@@ -1,3 +1,5 @@
+requires 'Bread::Board';
+
 requires 'FindBin::libs';
 
 # for Texinfo::Parser {{{
@@ -23,3 +25,5 @@ requires 'HTML::LinkExtor';
 
 requires 'HTTP::Tiny';
 requires 'IO::Socket::SSL';
+
+requires 'Set::Scalar';
