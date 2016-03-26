@@ -1,0 +1,42 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use FindBin::libs;
+
+use Bread::Board;
+use Quiver::Source;
+use Path::Tiny;
+
+
+my $c = container Quiver => as {
+	service glibc_path => path('~/sw_projects/SeeLucid/doc-experiment/doc-source/glibc/glibc');
+	service posix_2003_man_pages => path('~/sw_projects/SeeLucid/doc-experiment/doc-source/linux-man-pages/man-pages-posix-2003-a.tar.bz2');
+	service posix_2013_man_pages => path('~/sw_projects/SeeLucid/doc-experiment/doc-source/linux-man-pages/man-pages-posix-2013-a.tar.gz');
+	service linux_man_pages => path('~/sw_projects/SeeLucid/doc-experiment/doc-source/linux-man-pages/man-pages-4.00.tar.xz');
+
+	service glibc_source => (
+		block => sub {
+			my $s = shift;
+			my $src = Quiver::Source->new;
+			$src->add( $s->param('glibc_path') );
+			$src;
+		},
+		dependencies => [ 'glibc_path' ],
+	);
+	service GlibcCtags => (
+		class => 'Quiver::Backend::Ctags',
+		dependencies => { source => 'glibc_source' },
+	);
+};
+
+my $tags_thing = $c->resolve( service => 'GlibcCtags');
+my $it = $tags_thing->symbol_table_iter;
+while(my $tag = $it->()) {
+	use DDP; p $tag;
+}
+
+#my $backend = ...;
+#my $identifier = ...;
+
+
