@@ -37,6 +37,7 @@ sub _run_analysis {
 	}
 
 	system('ctags',
+		'--verbose=yes',
 		'-f', $self->tags_file,
 		'-L', $files_fh->filename,
 		'--fields=+n',);
