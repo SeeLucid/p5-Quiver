@@ -28,3 +28,5 @@ requires 'IO::Socket::SSL';
 
 requires 'Set::Scalar';
 requires 'Parse::ExuberantCTags';
+
+requires 'Log::Log4perl';

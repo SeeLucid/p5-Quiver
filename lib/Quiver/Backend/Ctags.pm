@@ -17,6 +17,8 @@ use Path::Class;
 use URI;
 use Try::Tiny;
 
+use Log::Log4perl qw(:easy);
+
 use Moo;
 
 extends qw(Quiver::Backend);
@@ -31,10 +33,13 @@ sub _run_analysis {
 	# for now, just call exuberant ctags with file list
 	# create tempfile list of files
 	my $files_fh = File::Temp->new();
+	INFO "Generating list of files";
 	my $files = $self->source->files;
+	INFO "Writing out list of files for ctags input";
 	for my $file (@$files) {
 		print $files_fh "$file\n";
 	}
+	INFO "Done with writing out list of files";
 
 	system('ctags',
 		'--verbose=yes',
