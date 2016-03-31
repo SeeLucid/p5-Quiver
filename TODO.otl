@@ -40,4 +40,5 @@ TODO
 	When handling bitfields, provide a declarative grammar
 		: e.g., for mmap(2), exactly one of { MAP_PRIVATE, MAP_SHARED } is
 		: required in the bitfield of the `flags` parameter.
-
+ctags backend
+	capture the verbose output to show progress
